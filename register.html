@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>فرم ثبت‌نام با حذف ردیف</title>
+    <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet">
+    <style>
+        *{
+             font-family: "Vazir";
+        }
+
+       
+            body {
+    
+                direction: rtl;
+                unicode-bidi: plaintext;
+           
+
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        button {
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.2rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        caption {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>فرم ثبت‌نام دانشجو</h2>
+
+    <form id="signupForm">
+        <label for="name">نام:</label>
+        <input type="text" id="name" required>
+
+        <label for="age">سن:</label>
+        <input type="number" id="age" required>
+
+        <label for="major">رشته تحصیلی:</label>
+        <select id="major">
+            <option value="علوم کامپیوتر">علوم کامپیوتر</option>
+            <option value="ریاضی">ریاضی</option>
+            <option value="فیزیک">فیزیک</option>
+        </select>
+
+        <button type="submit">ثبت‌نام</button>
+    </form>
+
+    <table id="studentTable">
+        <caption>لیست دانشجویان ثبت‌شده</caption>
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>سن</th>
+                <th>رشته</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ردیف‌ها به‌صورت پویا اضافه می‌شوند -->
+        </tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById("signupForm");
+        const tableBody = document.querySelector("#studentTable tbody");
+        const students = [];
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const age = document.getElementById("age").value;
+            const major = document.getElementById("major").value;
+
+            const student = { name, age, major };
+            students.push(student);
+
+            addRow(student, students.length - 1);
+            form.reset();
+        });
+
+        function addRow(student, index) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${student.name}</td>
+        <td>${student.age}</td>
+        <td>${student.major}</td>
+        <td><button class="delete-btn" onclick="deleteRow(${index})">حذف</button></td>
+      `;
+            tableBody.appendChild(row);
+        }
+
+        function deleteRow(index) {
+            students.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            tableBody.innerHTML = "";
+            students.forEach((student, i) => addRow(student, i));
+        }
+    </script>
+
+</body>
+
+</html>
